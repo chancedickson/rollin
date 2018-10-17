@@ -19,11 +19,11 @@ export interface DataToken {
 }
 
 export function isDatalessToken(token: Token): token is DatalessToken {
-  return !(<DataToken>token).value;
+  return (<DataToken>token).value === undefined;
 }
 
 export function isDataToken(token: Token): token is DataToken {
-  return !!(<DataToken>token).value;
+  return (<DataToken>token).value !== undefined;
 }
 
 export type Token = DatalessToken | DataToken;
