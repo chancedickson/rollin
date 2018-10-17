@@ -4,17 +4,12 @@
     "module": "ESNext",            
     "jsx": "react-native",         
     "noEmit": true,
-    "sourceMap": true,             
-    "removeComments": true,        
     "strict": true,                
     "noUnusedLocals": true,        
-    "noUnusedParameters": true,    
-    "moduleResolution": "node"
+    "noUnusedParameters": true,
+    "lib": ["ES2017"]
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

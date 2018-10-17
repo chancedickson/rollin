@@ -18,7 +18,7 @@ interface SideEffectFunc {
 export default class App extends React.Component<Props, State> {
   state: State = { buffer: "", log: [] };
   buttonClickCache = new Map<string, SideEffectFunc>();
-  log = React.createRef<FlatList<Text>>();
+  log = React.createRef<FlatList<string>>();
 
   buttonClick(c: string) {
     const cached = this.buttonClickCache.get(c);
@@ -28,7 +28,7 @@ export default class App extends React.Component<Props, State> {
 
     const f = () => {
       if (this.log.current) {
-        this.log.current.scrollToOffset(0);
+        this.log.current.scrollToOffset({ offset: 0 });
       }
       this.setState(
         produce(

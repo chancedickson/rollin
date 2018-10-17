@@ -4,7 +4,7 @@ import * as Tokens from "./Tokens";
 function single(
   type: Tokens.DatalessTokenType,
   s: string
-): [Tokens.DatalessToken<any>, string] {
+): [Tokens.DatalessToken, string] {
   return [{ type }, s.substring(1)];
 }
 
@@ -57,8 +57,12 @@ function tokenize(s: string): Tokens.Token[] {
 }
 
 function buildAst(tokens: Tokens.Token[]): AST.ASTNode {
-  const firstToken = tokens[0];
-  if (tokens.length === 1 && Tokens.isNumberToken(firstToken)) {
+  const [firstToken] = tokens;
+  if (
+    tokens.length === 1 &&
+    Tokens.isDataToken(firstToken) &&
+    firstToken.type === "NUMBER"
+  ) {
     return firstToken.value;
   }
 
@@ -129,25 +133,25 @@ function rand(i: number): number {
   return Math.floor(Math.random() * i) + 1;
 }
 
-function evalUnaryAst(ast: AST.UnaryASTNode<any>): number {
+function evalUnaryAst(ast: AST.UnaryASTNode): number {
   const value = evalAst(ast.value);
 
-  if (AST.isNegateASTNode(ast)) {
+  if (ast.type === "NEGATE") {
     return -value;
   }
 
   return 1 / value;
 }
 
-function evalBinaryAst(ast: AST.BinaryASTNode<any>): number {
+function evalBinaryAst(ast: AST.BinaryASTNode): number {
   const left = evalAst(ast.left);
   const right = evalAst(ast.right);
 
-  if (AST.isAddASTNode(ast)) {
+  if (ast.type === "ADD") {
     return left + right;
   }
 
-  if (AST.isMultiplyASTNode(ast)) {
+  if (ast.type === "MULTIPLY") {
     return left * right;
   }
 
