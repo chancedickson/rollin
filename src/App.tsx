@@ -3,6 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import produce, { Draft } from "immer";
 import { Button } from "./Button";
 import { evaluate } from "./Calculator";
+import { memoize } from "./util";
 
 interface Props {}
 
@@ -20,29 +21,18 @@ export default class App extends React.Component<Props, State> {
   buttonClickCache = new Map<string, SideEffectFunc>();
   log = React.createRef<FlatList<string>>();
 
-  buttonClick(c: string) {
-    const cached = this.buttonClickCache.get(c);
-    if (cached) {
-      return cached;
+  buttonClick = memoize<string, SideEffectFunc>((c: string) => () => {
+    if (this.log.current) {
+      this.log.current.scrollToOffset({ offset: 0 });
     }
-
-    const f = () => {
-      if (this.log.current) {
-        this.log.current.scrollToOffset({ offset: 0 });
-      }
-      this.setState(
-        produce(
-          (draft: Draft<State>): void => {
-            draft.buffer += c;
-          }
-        )
-      );
-    };
-
-    this.buttonClickCache.set(c, f);
-
-    return f;
-  }
+    this.setState(
+      produce(
+        (draft: Draft<State>): void => {
+          draft.buffer += c;
+        }
+      )
+    );
+  });
 
   backspace = () => {
     this.setState(
