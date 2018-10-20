@@ -25,6 +25,7 @@ export default class App extends React.Component<Props, State> {
     if (this.log.current) {
       this.log.current.scrollToOffset({ offset: 0 });
     }
+
     this.setState(
       produce(
         (draft: Draft<State>): void => {
@@ -56,32 +57,34 @@ export default class App extends React.Component<Props, State> {
 
   evaluate = () => {
     const buffer = this.state.buffer;
+
     if (buffer.length) {
       this.setState(
         produce((draft: Draft<State>) => {
+          draft.buffer = "";
           draft.log.unshift(buffer);
+
           try {
             draft.log.unshift(evaluate(buffer).toString());
           } catch (e) {
-            draft.log.unshift(typeof e === "string" ? e : "ERROR");
+            draft.log.unshift(typeof e === "string" ? e : "Error");
           }
-          draft.buffer = "";
         })
       );
     }
   };
 
-  getIndex(_: string, index: number) {
+  getIndex = (_: string, index: number) => {
     return index.toString();
-  }
+  };
 
-  renderLogItem({
+  renderLogItem = ({
     item,
     index
   }: {
     item: string;
     index: number;
-  }): React.ReactElement<Text> {
+  }): React.ReactElement<Text> => {
     return (
       <Text
         style={[
@@ -93,7 +96,7 @@ export default class App extends React.Component<Props, State> {
         {item}
       </Text>
     );
-  }
+  };
 
   render() {
     return (
