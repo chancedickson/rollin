@@ -56,17 +56,19 @@ export default class App extends React.Component<Props, State> {
 
   evaluate = () => {
     const buffer = this.state.buffer;
-    this.setState(
-      produce((draft: Draft<State>) => {
-        draft.log.unshift(buffer);
-        try {
-          draft.log.unshift(evaluate(buffer).toString());
-        } catch (e) {
-          draft.log.unshift(typeof e === "string" ? e : "ERROR");
-        }
-        draft.buffer = "";
-      })
-    );
+    if (buffer.length) {
+      this.setState(
+        produce((draft: Draft<State>) => {
+          draft.log.unshift(buffer);
+          try {
+            draft.log.unshift(evaluate(buffer).toString());
+          } catch (e) {
+            draft.log.unshift(typeof e === "string" ? e : "ERROR");
+          }
+          draft.buffer = "";
+        })
+      );
+    }
   };
 
   getIndex(_: string, index: number) {
