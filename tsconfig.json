@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES2017",            
-    "module": "ESNext",            
+    "target": "es2017",
+    "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react-native",         
+    "jsx": "react-native",
     "noEmit": true,
-    "strict": true,                
-    "noUnusedLocals": true,        
+    "strict": true,
+    "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib": ["ES2017"]
+    "lib": ["es2017"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
